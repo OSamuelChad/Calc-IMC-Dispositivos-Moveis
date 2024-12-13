@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+  <title>Animais</title>
+  <script>
+    async function escolherTipoAnimal() {
+      const tipoAnimal = document.getElementById('tipoAnimal').value;
+
+      if (tipoAnimal == '') return; 
+
+      const animaisJSONURL = `dados/${tipoAnimal}.json`;
+
+      const resultado = await fetch(animaisJSONURL);
+
+      if (resultado.ok) {
+        const animais = await resultado.json();
+
+        listarAnimais(animais);
+      }
+    }
+
+    async function listarAnimais(animais) {
+      const animaisUL = document.getElementById('animaisUL');
+      animaisUL.innerHTML = "";
+      for (const animal of animais) {
+        const novoLI = document.createElement('LI');
+        novoLI.innerHTML = `${animal.nome} - ${animal.raca}`;
+        animaisUL.appendChild(novoLI);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Animais</h1>
+    <select id="tipoAnimal" onChange="escolherTipoAnimal()" class="form-select">
+      <option value="">Escolha um tipo abaixo</option>
+      <option value="caes">Cães</option>
+      <option value="gatos">Gatos</option>
+    </select>
+
+    <ul id="animaisUL">
+    </ul>
+
+  </div>
+</body>
+</html>
